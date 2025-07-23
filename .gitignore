@@ -1,2 +1,6 @@
 env
+src/api/__pycache__/
+src/integrations/__pycache__/
+src/model_training/__pycache__/
+__pycache__/
 .env
