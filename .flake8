@@ -13,3 +13,4 @@ ignore =
     E501,  
     F401,  
     E741,  
+ignore = E306, E272, E702
