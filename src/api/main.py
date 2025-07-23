@@ -17,6 +17,9 @@ from transformers import (
 )
 from peft import PeftModel
 
+from src.integrations.jira import router as jira_router
+
+
 # ─── Configuration ─────────────────────────────────────────────────────
 INDEX_DIR     = os.getenv("INDEX_DIR", "data/index")
 ADAPTER_DIR   = os.getenv("ADAPTER_DIR", "models/lora_adapter")
@@ -55,6 +58,8 @@ if _tokenizer.pad_token is None:
 
 # ─── FastAPI app & schemas ─────────────────────────────────────────────
 app = FastAPI(title="OpsAI Inference API")
+app.include_router(jira_router)
+
 @app.get("/")
 async def root():
     return {"message": "Welcome to the OpsAI API! See /docs for usage."}
