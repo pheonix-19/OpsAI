@@ -19,6 +19,26 @@ from peft import PeftModel
 from src.monitoring.metrics import setup_metrics
 from src.integrations.jira import router as jira_router
 
+import sqlite3
+from pathlib import Path
+
+
+DB_PATH = Path("data") / "opsai.db"
+DB_PATH.parent.mkdir(exist_ok=True)
+def init_db():
+    conn = sqlite3.connect(DB_PATH)
+    conn.execute("""
+      CREATE TABLE IF NOT EXISTS feedback (
+        id        INTEGER PRIMARY KEY AUTOINCREMENT,
+        ticket    TEXT NOT NULL,
+        suggestion TEXT NOT NULL,
+        rating    INTEGER NOT NULL CHECK (rating BETWEEN 1 AND 5),
+        comment   TEXT,
+        ts        DATETIME DEFAULT CURRENT_TIMESTAMP
+      );
+    """)
+    conn.commit()
+    conn.close()
 
 # ─── Configuration ─────────────────────────────────────────────────────
 INDEX_DIR     = os.getenv("INDEX_DIR", "data/index")
@@ -57,6 +77,7 @@ if _tokenizer.pad_token is None:
     _tokenizer.pad_token_id = _tokenizer.eos_token_id
 
 # ─── FastAPI app & schemas ─────────────────────────────────────────────
+init_db()
 app = FastAPI(title="OpsAI Inference API")
 setup_metrics(app)
 app.include_router(jira_router)
@@ -77,6 +98,11 @@ class ResolveResponse(BaseModel):
     suggestion: str
     context_tickets: List[dict]
 
+class FeedbackIn(BaseModel):
+    ticket: dict
+    suggestion: str
+    rating: conint(ge=1, le=5)
+    comment: str = None
 # simple mapping of labels → team names (adjust as needed)
 LABEL_TEAM_MAP = {
     "network":    "IT Helpdesk",
@@ -112,6 +138,7 @@ async def classify(q: QueryPayload):
     teams = sorted({LABEL_TEAM_MAP.get(tag, "Other") for tag in tags})
     return {"tags": tags, "teams": teams}
 
+
 @app.post("/resolve", response_model=ResolveResponse)
 async def resolve(q: QueryPayload):
     hits = _retrieve(q.text, q.top_k)
@@ -137,3 +164,14 @@ async def resolve(q: QueryPayload):
     suggestion = _tokenizer.decode(out[0], skip_special_tokens=True)[len(prompt):].strip()
 
     return {"suggestion": suggestion, "context_tickets": [h["ticket"] for h in hits]}
+
+@app.post("/feedback")
+async def feedback(data: FeedbackIn):
+    conn = sqlite3.connect(DB_PATH)
+    conn.execute(
+        "INSERT INTO feedback (ticket, suggestion, rating, comment) VALUES (?, ?, ?, ?)",
+        (json.dumps(data.ticket), data.suggestion, data.rating, data.comment),
+    )
+    conn.commit()
+    conn.close()
+    return {"status":"ok"}
