@@ -1,11 +1,16 @@
 # src/ingestion/parser.py
+
 import csv
 import json
 import os
 from typing import List, Dict, Any
 
 def load_csv(path: str) -> List[Dict[str, Any]]:
-    tickets = []
+    """
+    Load tickets from a CSV file.
+    Expects columns: Subject, Description, Tags, Resolution.
+    """
+    tickets: List[Dict[str, Any]] = []
     with open(path, newline='', encoding='utf-8') as f:
         reader = csv.DictReader(f)
         for row in reader:
@@ -18,22 +23,39 @@ def load_csv(path: str) -> List[Dict[str, Any]]:
     return tickets
 
 def load_json(path: str) -> List[Dict[str, Any]]:
+    """
+    Load tickets from a JSON file.
+    - If JSON is a dict with key 'tickets', returns data['tickets'].
+    - If JSON is a list, returns it directly.
+    - Otherwise returns [].
+    """
     with open(path, 'r', encoding='utf-8') as f:
         data = json.load(f)
-    # expect either {"tickets": [...]} or a raw list
-    return data.get('tickets', data if isinstance(data, list) else [])
+
+    if isinstance(data, dict):
+        return data.get('tickets', [])
+    elif isinstance(data, list):
+        return data
+    else:
+        return []
 
 def normalize_ticket(ticket: Dict[str, Any]) -> Dict[str, Any]:
+    """
+    Ensure each ticket has clean 'title', 'body', 'labels', and 'resolution' fields.
+    """
     return {
         'title':      ticket.get('title', '').strip(),
         'body':       ticket.get('body', '').strip(),
-        'labels':     ticket.get('labels', []),
+        'labels':     ticket.get('labels', []) if isinstance(ticket.get('labels', []), list) else [],
         'resolution': ticket.get('resolution', '').strip(),
     }
 
 def save_processed(tickets: List[Dict[str, Any]], output_dir: str) -> None:
+    """
+    Write each normalized ticket to its own JSON file under output_dir.
+    """
     os.makedirs(output_dir, exist_ok=True)
-    for i, t in enumerate(tickets):
-        fn = os.path.join(output_dir, f'ticket_{i}.json')
-        with open(fn, 'w', encoding='utf-8') as f:
-            json.dump(t, f, ensure_ascii=False, indent=2)
+    for idx, ticket in enumerate(tickets):
+        filename = os.path.join(output_dir, f'ticket_{idx}.json')
+        with open(filename, 'w', encoding='utf-8') as f:
+            json.dump(ticket, f, ensure_ascii=False, indent=2)
