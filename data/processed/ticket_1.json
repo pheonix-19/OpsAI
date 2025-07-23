@@ -1,0 +1,8 @@
+{
+  "title": "Email issue",
+  "body": "Unable to send emails",
+  "labels": [
+    "mail"
+  ],
+  "resolution": "Reconfigure SMTP settings"
+}

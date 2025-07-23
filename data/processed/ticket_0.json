@@ -1,0 +1,8 @@
+{
+  "title": "VPN down",
+  "body": "Can't connect to VPN.",
+  "labels": [
+    "network"
+  ],
+  "resolution": "Restart VPN service"
+}

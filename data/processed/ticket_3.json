@@ -1,0 +1,9 @@
+{
+  "title": "JIRA slow",
+  "body": "JIRA UI is very sluggish today.",
+  "labels": [
+    "tooling",
+    "performance"
+  ],
+  "resolution": "Cleared cache; performance improved"
+}

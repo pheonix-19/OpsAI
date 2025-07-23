@@ -1,0 +1,9 @@
+{
+  "title": "Reset pwd",
+  "body": "Forgot my password and cannot log in.",
+  "labels": [
+    "auth",
+    "user"
+  ],
+  "resolution": "Password reset link sent via email"
+}
