@@ -5,11 +5,11 @@ max-line-length = 100
 
 # these are the codes you saw in your CI logs:
 ignore =
-    E221,  # multiple spaces before operator
-    E302,  # expected 2 blank lines, found 1
-    E305,  # expected 2 blank lines after class or function definition
-    E127,  # continuation line over-indented
-    E231,  # missing whitespace after ':', ','
-    E501,  # line too long
-    F401,  # imported but unused
-    E741,  # ambiguous variable name
+    E221,  
+    E302,  
+    E305,  
+    E127,  
+    E231,  
+    E501,  
+    F401,  
+    E741,  
