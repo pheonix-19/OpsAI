@@ -43,7 +43,7 @@ jobs:
         run: docker build -t opsai:${{ github.sha }} .
 
       - name: Upload Docker image artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: opsai-image
           path: |
