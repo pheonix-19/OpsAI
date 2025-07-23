@@ -16,9 +16,15 @@ from peft import LoraConfig, get_peft_model, prepare_model_for_kbit_training
 
 class TicketDataset(Dataset):
     def __init__(self, data_dir: str, tokenizer, max_length: int = 512):
-        self.samples = []
+        # Ensure tokenizer has a pad_token (important for both training & tests)
+        if tokenizer.pad_token is None:
+            # Use EOS as PAD
+            tokenizer.pad_token = tokenizer.eos_token
+            tokenizer.pad_token_id = tokenizer.eos_token_id
+
         self.tokenizer = tokenizer
         self.max_length = max_length
+        self.samples = []
 
         files = sorted(f for f in os.listdir(data_dir) if f.endswith('.json'))
         for fn in files:
@@ -33,6 +39,8 @@ class TicketDataset(Dataset):
     def __getitem__(self, idx):
         prompt, target = self.samples[idx]
         full = prompt + " " + target
+
+        # pad to max_length using the tokenizer's pad_token
         enc = self.tokenizer(
             full,
             truncation=True,
@@ -42,7 +50,7 @@ class TicketDataset(Dataset):
         input_ids      = torch.tensor(enc.input_ids)
         attention_mask = torch.tensor(enc.attention_mask)
 
-        # mask prompt tokens
+        # mask out the prompt portion in labels
         prompt_ids = self.tokenizer(prompt, add_special_tokens=False).input_ids
         labels = input_ids.clone()
         labels[:len(prompt_ids)] = -100
@@ -66,10 +74,8 @@ def main():
 
     # ─── Tokenizer + Model Setup ──────────────────────────────────────────
     tokenizer = AutoTokenizer.from_pretrained(args.base_model, use_fast=True)
-    # If no pad token, use eos_token as padding
-    if tokenizer.pad_token is None:
-        tokenizer.pad_token = tokenizer.eos_token
-    # bnb 4-bit quant config
+    # no need to patch pad_token here anymore—TicketDataset handles it
+
     bnb_config = BitsAndBytesConfig(
         load_in_4bit=True,
         bnb_4bit_quant_type='nf4',
@@ -80,9 +86,7 @@ def main():
         quantization_config=bnb_config,
         device_map='auto',
     )
-    # ensure model also knows pad token id
     model.config.pad_token_id = tokenizer.pad_token_id
-
     model = prepare_model_for_kbit_training(model)
 
     # ─── Attach LoRA ─────────────────────────────────────────────────────
