@@ -2,9 +2,29 @@ version: "3.8"
 services:
   api:
     build: .
+    env_file:
+      - .env
     volumes:
-      - ./:/app
-    working_dir: /app
-    command: uvicorn src.api.main:app --reload --host 0.0.0.0 --port 8000
+      - ./src:/app/src:ro
+      - ./data/index:/app/data/index:ro
+      - ./models/lora_adapter:/app/models/lora_adapter:ro
     ports:
       - "8000:8000"
+    depends_on:
+      - prometheus
+
+  prometheus:
+    image: prom/prometheus:latest
+    volumes:
+      - ./infra/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    ports:
+      - "9090:9090"
+
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    depends_on:
+      - prometheus

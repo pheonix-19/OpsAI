@@ -1,0 +1,72 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: [3.10, 3.11]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python }}
+
+      - name: Install dependencies
+        run: |
+          python -m venv venv
+          source venv/bin/activate
+          pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Lint with flake8
+        run: |
+          source venv/bin/activate
+          pip install flake8
+          flake8 src tests
+
+      - name: Run tests
+        run: |
+          source venv/bin/activate
+          pytest -q
+
+      - name: Build Docker image
+        run: docker build -t opsai:${{ github.sha }} .
+
+      - name: Upload Docker image artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: opsai-image
+          path: |
+            $(docker save opsai:${{ github.sha }} | gzip) 
+
+  deploy:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    steps:
+      - name: Download Docker image artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: opsai-image
+      - name: Load Docker image
+        run: |
+          gunzip -c opsai-image | docker load
+      - name: Log into Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USER }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Tag & push
+        run: |
+          docker tag opsai:${{ github.sha }} ${{ secrets.DOCKERHUB_USER }}/opsai:latest
+          docker push ${{ secrets.DOCKERHUB_USER }}/opsai:latest
