@@ -16,7 +16,7 @@ from transformers import (
     GenerationConfig,
 )
 from peft import PeftModel
-
+from src.monitoring.metrics import setup_metrics
 from src.integrations.jira import router as jira_router
 
 
@@ -58,6 +58,7 @@ if _tokenizer.pad_token is None:
 
 # ─── FastAPI app & schemas ─────────────────────────────────────────────
 app = FastAPI(title="OpsAI Inference API")
+setup_metrics(app)
 app.include_router(jira_router)
 
 @app.get("/")
