@@ -1,16 +1,8 @@
-# .flake8
 [flake8]
-# bump line‑length limit
 max-line-length = 100
-
-# these are the codes you saw in your CI logs:
-ignore =
-    E221,  
-    E302,  
-    E305,  
-    E127,  
-    E231,  
-    E501,  
-    F401,  
-    E741,  
-ignore = E306, E272, E702
+ignore = E203, E231, E266, E501, W503
+exclude =
+    .git,
+    __pycache__,
+    *.pyc,
+    conf.py
