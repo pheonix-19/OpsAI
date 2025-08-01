@@ -69,13 +69,13 @@ conda-env/
 # ============================================================================
 # 🔐 Environment & Configuration
 # ============================================================================
-.env
+.env.example
 .env.local
 .env.*.local
 .env.production
 .env.staging
 .env.development
-*.env
+
 config.local.json
 secrets.json
 
