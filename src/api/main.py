@@ -2,19 +2,20 @@
 
 import os
 import pickle
+import json
 from typing import List
 
 import faiss
 import torch
 from fastapi import FastAPI
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from sentence_transformers import SentenceTransformer
 from transformers import (
     AutoTokenizer,
     AutoModelForCausalLM,
-    BitsAndBytesConfig,
-    GenerationConfig,
 )
+from transformers.utils.quantization_config import BitsAndBytesConfig
+from transformers.generation.configuration_utils import GenerationConfig
 from peft import PeftModel
 from src.monitoring.metrics import setup_metrics
 from src.integrations.jira import router as jira_router
@@ -101,8 +102,8 @@ class ResolveResponse(BaseModel):
 class FeedbackIn(BaseModel):
     ticket: dict
     suggestion: str
-    rating: conint(ge=1, le=5)
-    comment: str = None
+    rating: int = Field(ge=1, le=5)
+    comment: str | None = None
 # simple mapping of labels → team names (adjust as needed)
 LABEL_TEAM_MAP = {
     "network":    "IT Helpdesk",
@@ -158,9 +159,23 @@ async def resolve(q: QueryPayload):
         "Provide a concise resolution suggestion:"
     )
 
+    # Tokenize and move to the same device as the model
     inputs = _tokenizer(prompt, return_tensors="pt", padding=True, truncation=True)
-    gen_cfg = GenerationConfig(max_new_tokens=100, temperature=0.2)
-    out = _model.generate(**inputs, generation_config=gen_cfg)
+    # Move input tensors to the same device as the model
+    device = next(_model.parameters()).device
+    inputs = {k: v.to(device) for k, v in inputs.items()}
+    
+    # Use proper generation parameters (remove temperature as it's causing issues)
+    gen_cfg = GenerationConfig(
+        max_new_tokens=100,
+        do_sample=True,
+        top_p=0.9,
+        pad_token_id=_tokenizer.eos_token_id
+    )
+    
+    with torch.no_grad():
+        out = _model.generate(**inputs, generation_config=gen_cfg)
+    
     suggestion = _tokenizer.decode(out[0], skip_special_tokens=True)[len(prompt):].strip()
 
     return {"suggestion": suggestion, "context_tickets": [h["ticket"] for h in hits]}
