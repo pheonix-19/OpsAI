@@ -317,23 +317,91 @@ opsai_request_latency_seconds_sum{endpoint="/resolve"} 2.28
 - **AI Performance**: Model inference times
 - **Business KPIs**: Total tickets processed
 
-### **📈 Grafana Dashboards**
+### **📈 Grafana Dashboards** ✅ **CONFIGURED & WORKING**
 Beautiful visualizations for monitoring system health:
 
-**Import the Pre-built Dashboard:**
-1. Access Grafana: http://localhost:3000 (admin/admin)
-2. Import dashboard: `grafana-dashboard-opsai.json`
-3. Connect to Prometheus data source: http://prometheus:9090
+**✅ Active Dashboards:**
+1. **OpsAI Monitoring Dashboard** - Real-time API metrics
+2. **Prometheus 2.0 Stats** - System performance monitoring  
+3. **Prometheus Stats** - Infrastructure metrics
+
+**📊 Live Data Source:** http://localhost:9090 (Prometheus)
+**🖥️ Access:** http://localhost:3000 (admin/admin)
 
 **Dashboard Panels Include:**
-- 📊 API request rate over time
-- ⏱️ Response time percentiles
-- 🚨 Error rate monitoring  
-- 📈 AI model performance metrics
-- 🥧 Request breakdown by endpoint
-- 📱 Mobile-responsive design
+- 📊 **Total API Requests**: 273+ requests tracked
+- ⏱️ **Request Rate**: Real-time requests per minute
+- 🚨 **HTTP Status Codes**: Success (200) vs Errors (422)
+- 📈 **Endpoint Breakdown**: `/metrics`, `/classify`, `/` usage
+- 🥧 **Visual Analytics**: Interactive charts and tables
+- � **Mobile-responsive**: Works on all devices
 
-### **🚨 Automated Alerting**
+**Current Metrics:**
+- `/metrics` endpoint: 266 requests (Prometheus scraping)
+- `/classify` endpoint: 6 requests (with validation tracking)
+- `/` root endpoint: 1 request (health checks)
+
+### **� Prometheus Query Examples**
+Useful queries for monitoring OpsAI performance:
+
+**Basic Metrics:**
+```promql
+# Total API requests by endpoint
+sum(opsai_requests_total) by (endpoint)
+
+# Request rate (requests per second)
+rate(opsai_requests_total[5m])
+
+# Requests by HTTP status code
+sum(opsai_requests_total) by (http_status)
+
+# Total requests in last hour
+increase(opsai_requests_total[1h])
+```
+
+**Performance Monitoring:**
+```promql
+# Average response time
+avg(opsai_request_latency_seconds) by (endpoint)
+
+# 95th percentile response time
+histogram_quantile(0.95, rate(opsai_request_latency_seconds_bucket[5m]))
+
+# Error rate percentage
+rate(opsai_requests_total{http_status=~"5.."}[5m]) / rate(opsai_requests_total[5m]) * 100
+
+# Request success rate
+rate(opsai_requests_total{http_status="200"}[5m]) / rate(opsai_requests_total[5m]) * 100
+```
+
+**Business KPIs:**
+```promql
+# Total tickets processed today
+increase(opsai_requests_total{endpoint=~"/classify|/resolve"}[1d])
+
+# Classification requests per hour
+rate(opsai_requests_total{endpoint="/classify"}[1h]) * 3600
+
+# AI resolution requests trend
+rate(opsai_requests_total{endpoint="/resolve"}[5m])
+
+# System availability (uptime)
+up{job="opsai_api"}
+```
+
+**Alerting Queries:**
+```promql
+# High error rate alert (>5% errors for 2+ minutes)
+rate(opsai_requests_total{http_status=~"5.."}[2m]) / rate(opsai_requests_total[2m]) > 0.05
+
+# High latency alert (avg response time >1s for 2+ minutes)
+avg(opsai_request_latency_seconds) > 1
+
+# Service down alert (no requests for 5+ minutes)
+rate(opsai_requests_total[5m]) == 0
+```
+
+### **�🚨 Automated Alerting**
 Pre-configured alerts for operational issues:
 
 - **🔴 High Error Rate**: >5% 5xx errors for 2+ minutes
