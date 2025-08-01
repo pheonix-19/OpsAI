@@ -1,3 +1,10 @@
+# Docker Compose Configuration for OpsAI
+# Multi-service orchestration with API, Prometheus, and Grafana
+#
+# Author: Ayush
+# GitHub: https://github.com/pheonix-19
+# Copyright (c) 2025
+
 version: "3.8"
 services:
   api:

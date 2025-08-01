@@ -1,3 +1,12 @@
+#!/usr/bin/env python3
+"""
+Prometheus Metrics Module for OpsAI
+Provides comprehensive monitoring and metrics collection for system performance.
+
+Author: Ayush
+GitHub: https://github.com/pheonix-19
+Copyright (c) 2025
+"""
 # src/monitoring/metrics.py
 
 import time

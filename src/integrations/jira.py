@@ -1,4 +1,14 @@
-# src/integrations/jira.py
+#!/usr/bin/env python3
+"""
+OpsAI Jira Integration
+
+Author: Ayush
+GitHub: https://github.com/pheonix-19
+Project: OpsAI - Intelligent IT Support Automation
+Copyright (c) 2025 Ayush. All rights reserved.
+
+This module provides Jira integration for automated ticket processing.
+"""
 
 import os
 from dotenv import load_dotenv

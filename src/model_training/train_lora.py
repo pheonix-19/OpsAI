@@ -1,3 +1,12 @@
+#!/usr/bin/env python3
+"""
+LoRA Fine-Tuning Module for OpsAI
+Implementation of LoRA (Low-Rank Adaptation) fine-tuning for language models.
+
+Author: Ayush
+GitHub: https://github.com/pheonix-19
+Copyright (c) 2025
+"""
 # src/model_training/train_lora.py
 
 import os

@@ -1,3 +1,12 @@
+#!/usr/bin/env python3
+"""
+Model Retraining Module for OpsAI
+Automated retraining pipeline for LoRA fine-tuning with continuous learning.
+
+Author: Ayush
+GitHub: https://github.com/pheonix-19
+Copyright (c) 2025
+"""
 # src/model_training/retrain.py
 
 import argparse

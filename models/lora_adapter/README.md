@@ -1,3 +1,12 @@
+<!--
+LoRA Adapter Model Documentation for OpsAI
+Fine-tuned model configuration and usage information.
+
+Author: Ayush
+GitHub: https://github.com/pheonix-19
+Copyright (c) 2025
+-->
+
 ---
 base_model: EleutherAI/gpt-neo-125M
 library_name: peft

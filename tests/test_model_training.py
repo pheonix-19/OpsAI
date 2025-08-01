@@ -1,3 +1,12 @@
+#!/usr/bin/env python3
+"""
+Model Training Testing Module for OpsAI
+Unit tests for LoRA fine-tuning and model training pipeline.
+
+Author: Ayush
+GitHub: https://github.com/pheonix-19
+Copyright (c) 2025
+"""
 # tests/test_model_training.py
 
 import os

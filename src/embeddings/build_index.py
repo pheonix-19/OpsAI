@@ -1,4 +1,14 @@
-# src/embeddings/build_index.py
+#!/usr/bin/env python3
+"""
+OpsAI Vector Index Builder
+
+Author: Ayush
+GitHub: https://github.com/pheonix-19
+Project: OpsAI - Intelligent IT Support Automation
+Copyright (c) 2025 Ayush. All rights reserved.
+
+This module builds FAISS vector indexes for semantic search.
+"""
 
 import argparse
 from .embedder import build_and_save

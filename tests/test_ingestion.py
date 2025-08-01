@@ -1,3 +1,12 @@
+#!/usr/bin/env python3
+"""
+Ingestion Testing Module for OpsAI
+Unit tests for data ingestion pipeline and ticket processing.
+
+Author: Ayush
+GitHub: https://github.com/pheonix-19
+Copyright (c) 2025
+"""
 # tests/test_ingestion.py
 import os
 import shutil

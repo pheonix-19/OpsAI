@@ -1,3 +1,12 @@
+#!/usr/bin/env python3
+"""
+API Testing Module for OpsAI
+Unit tests for FastAPI endpoints and AI operations functionality.
+
+Author: Ayush
+GitHub: https://github.com/pheonix-19
+Copyright (c) 2025
+"""
 # tests/test_api.py
 
 import json

@@ -1,4 +1,14 @@
-# src/embeddings/embedder.py
+#!/usr/bin/env python3
+"""
+OpsAI Embedding Generator
+
+Author: Ayush
+GitHub: https://github.com/pheonix-19
+Project: OpsAI - Intelligent IT Support Automation
+Copyright (c) 2025 Ayush. All rights reserved.
+
+This module handles text embedding generation and FAISS index operations.
+"""
 
 import os
 import json

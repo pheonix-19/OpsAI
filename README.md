@@ -1,5 +1,12 @@
 # 🤖 OpsAI: Intelligent IT Support Automation
 
+<!--
+    Author: Ayush
+    GitHub: https://github.com/pheonix-19
+    Project: OpsAI - Intelligent IT Support Automation
+    Copyright (c) 2025 Ayush. All rights reserved.
+-->
+
 > **Transform your IT helpdesk with AI-powered ticket triage and resolution suggestions**
 
 OpsAI is an advanced AI system that revolutionizes IT support operations by automatically categorizing tickets, suggesting solutions, and routing requests to the right teams. Using cutting-edge vector embeddings and fine-tuned language models, it learns from historical data to provide instant, contextual support recommendations.
@@ -516,10 +523,3 @@ pip install -r requirements.txt
 PYTHONPATH=. uvicorn src.api.main:app --reload
 ```
 
-**Questions? Issues? Ideas?** We'd love to hear from you! 
-
-[![GitHub stars](https://img.shields.io/github/stars/pheonix-19/OpsAI?style=social)](https://github.com/pheonix-19/OpsAI)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
-[![FastAPI](https://img.shields.io/badge/FastAPI-005571?style=flat&logo=fastapi)](https://fastapi.tiangolo.com)
-[![Docker](https://img.shields.io/badge/Docker-2496ED?style=flat&logo=docker&logoColor=white)](https://www.docker.com)

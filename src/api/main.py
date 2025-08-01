@@ -1,4 +1,15 @@
-# src/api/main.py
+#!/usr/bin/env python3
+"""
+OpsAI FastAPI Main Application
+
+Author: Ayush
+GitHub: https://github.com/pheonix-19
+Project: OpsAI - Intelligent IT Support Automation
+Copyright (c) 2025 Ayush. All rights reserved.
+
+This module contains the main FastAPI application for OpsAI,
+providing AI-powered ticket classification and resolution.
+"""
 
 import os
 import pickle

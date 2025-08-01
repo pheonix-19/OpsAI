@@ -1,4 +1,15 @@
-# src/ingestion/ingest.py
+#!/usr/bin/env python3
+"""
+OpsAI Data Ingestion
+
+Author: Ayush
+GitHub: https://github.com/pheonix-19
+Project: OpsAI - Intelligent IT Support Automation
+Copyright (c) 2025 Ayush. All rights reserved.
+
+This module handles raw ticket data ingestion and preprocessing.
+"""
+
 import glob
 import sys
 import os

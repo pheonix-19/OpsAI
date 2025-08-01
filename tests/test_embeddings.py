@@ -1,3 +1,12 @@
+#!/usr/bin/env python3
+"""
+Embeddings Testing Module for OpsAI
+Unit tests for vector embeddings, FAISS indexing, and semantic search.
+
+Author: Ayush
+GitHub: https://github.com/pheonix-19
+Copyright (c) 2025
+"""
 # tests/test_embeddings.py
 
 import os

@@ -1,4 +1,14 @@
-# src/ingestion/parser.py
+#!/usr/bin/env python3
+"""
+OpsAI Data Parser
+
+Author: Ayush
+GitHub: https://github.com/pheonix-19
+Project: OpsAI - Intelligent IT Support Automation
+Copyright (c) 2025 Ayush. All rights reserved.
+
+This module handles parsing of various data formats for ticket ingestion.
+"""
 
 import csv
 import json

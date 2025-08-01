@@ -1,3 +1,10 @@
+# Prometheus Alert Rules for OpsAI
+# Monitoring alerts and threshold definitions for system health
+#
+# Author: Ayush
+# GitHub: https://github.com/pheonix-19
+# Copyright (c) 2025
+
 groups:
   - name: opsai_alerts
     rules:

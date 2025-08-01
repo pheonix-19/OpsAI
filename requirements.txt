@@ -1,3 +1,10 @@
+# Requirements for OpsAI
+# Python dependencies for AI-powered operations platform
+#
+# Author: Ayush
+# GitHub: https://github.com/pheonix-19
+# Copyright (c) 2025
+
 accelerate==1.9.0
 bitsandbytes==0.46.1
 faiss-cpu==1.11.0.post1

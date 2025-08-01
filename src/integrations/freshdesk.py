@@ -1,3 +1,12 @@
+#!/usr/bin/env python3
+"""
+FreshDesk Integration for OpsAI
+Handles ticket processing from FreshDesk API for AI operations.
+
+Author: Ayush
+GitHub: https://github.com/pheonix-19
+Copyright (c) 2025
+"""
 # src/integrations/freshdesk.py
 
 import os

@@ -1,4 +1,10 @@
-# Dockerfile
+# Dockerfile for OpsAI
+# Docker container setup for AI-powered operations platform
+#
+# Author: Ayush
+# GitHub: https://github.com/pheonix-19
+# Copyright (c) 2025
+
 FROM python:3.11-slim
 
 # set a working directory

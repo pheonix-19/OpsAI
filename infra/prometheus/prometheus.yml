@@ -1,3 +1,10 @@
+# Prometheus Configuration for OpsAI
+# Monitoring and metrics collection setup for AI operations platform
+#
+# Author: Ayush
+# GitHub: https://github.com/pheonix-19
+# Copyright (c) 2025
+
 global:
   scrape_interval: 15s
 

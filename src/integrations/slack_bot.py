@@ -1,4 +1,14 @@
-# src/integrations/slack_bot.py
+#!/usr/bin/env python3
+"""
+OpsAI Slack Bot Integration
+
+Author: Ayush
+GitHub: https://github.com/pheonix-19
+Project: OpsAI - Intelligent IT Support Automation
+Copyright (c) 2025 Ayush. All rights reserved.
+
+This module provides Slack bot integration for real-time ticket support.
+"""
 
 import os
 from dotenv import load_dotenv

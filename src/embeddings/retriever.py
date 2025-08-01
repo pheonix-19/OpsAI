@@ -1,4 +1,14 @@
-# src/embeddings/retriever.py
+#!/usr/bin/env python3
+"""
+OpsAI Vector Retriever
+
+Author: Ayush
+GitHub: https://github.com/pheonix-19
+Project: OpsAI - Intelligent IT Support Automation
+Copyright (c) 2025 Ayush. All rights reserved.
+
+This module handles semantic search and vector retrieval operations.
+"""
 
 import os
 import pickle
