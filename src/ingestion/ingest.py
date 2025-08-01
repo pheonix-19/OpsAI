@@ -1,7 +1,9 @@
 # src/ingestion/ingest.py
 import glob
 import sys
-from .parser import load_csv, load_json, normalize_ticket, save_processed
+import os
+sys.path.append(os.path.dirname(__file__))
+from parser import load_csv, load_json, normalize_ticket, save_processed
 
 def main(raw_dir: str, out_dir: str):
     tickets = []
