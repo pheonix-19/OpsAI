@@ -1,20 +1,20 @@
 #!/usr/bin/env python3
 """
-OpsAI Data Ingestion
-
-Author: Ayush
-GitHub: https://github.com/pheonix-19
-Project: OpsAI - Intelligent IT Support Automation
-Copyright (c) 2025 Ayush. All rights reserved.
-
-This module handles raw ticket data ingestion and preprocessing.
+Ingestion Module
+Reads raw tickets and processes them into normalized JSON files.
 """
 
-import glob
-import sys
 import os
-sys.path.append(os.path.dirname(__file__))
-from parser import load_csv, load_json, normalize_ticket, save_processed
+import sys
+import glob
+
+try:
+    from .parser import load_csv, load_json, normalize_ticket, save_processed
+except ImportError:
+    # For direct execution
+    sys.path.append(os.path.dirname(__file__))
+    from parser import load_csv, load_json, normalize_ticket, save_processed
+
 
 def main(raw_dir: str, out_dir: str):
     tickets = []
@@ -28,6 +28,7 @@ def main(raw_dir: str, out_dir: str):
     processed = [normalize_ticket(t) for t in tickets]
     save_processed(processed, out_dir)
     print(f"[✅] Processed {len(processed)} tickets → {out_dir}")
+
 
 if __name__ == '__main__':
     if len(sys.argv) != 3:

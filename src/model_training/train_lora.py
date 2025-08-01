@@ -23,6 +23,7 @@ from transformers import (
 )
 from peft import LoraConfig, get_peft_model, prepare_model_for_kbit_training
 
+
 class TicketDataset(Dataset):
     def __init__(self, data_dir: str, tokenizer, max_length: int = 512):
         # Ensure tokenizer has a pad_token (important for both training & tests)
@@ -56,7 +57,7 @@ class TicketDataset(Dataset):
             max_length=self.max_length,
             padding='max_length',
         )
-        input_ids      = torch.tensor(enc.input_ids)
+        input_ids = torch.tensor(enc.input_ids)
         attention_mask = torch.tensor(enc.attention_mask)
 
         # mask out the prompt portion in labels
@@ -65,20 +66,21 @@ class TicketDataset(Dataset):
         labels[:len(prompt_ids)] = -100
 
         return {
-            'input_ids':      input_ids,
+            'input_ids': input_ids,
             'attention_mask': attention_mask,
-            'labels':         labels,
+            'labels': labels,
         }
+
 
 def main():
     parser = argparse.ArgumentParser(description="Fine‑tune LLM on ticket data with LoRA/QLoRA")
-    parser.add_argument('--data-dir',     required=True,  help="Processed tickets JSON dir")
-    parser.add_argument('--output-dir',   required=True,  help="Where to save fine‑tuned adapter")
-    parser.add_argument('--base-model',   required=True,  help="HuggingFace model ID (e.g. EleutherAI/gpt-neo-125M)")
-    parser.add_argument('--epochs',       type=int, default=3)
-    parser.add_argument('--batch-size',   type=int, default=4)
-    parser.add_argument('--max-length',   type=int, default=512)
-    parser.add_argument('--learning-rate',type=float, default=3e-4)
+    parser.add_argument('--data-dir', required=True, help="Processed tickets JSON dir")
+    parser.add_argument('--output-dir', required=True, help="Where to save fine‑tuned adapter")
+    parser.add_argument('--base-model', required=True, help="HuggingFace model ID (e.g. EleutherAI/gpt-neo-125M)")
+    parser.add_argument('--epochs', type=int, default=3)
+    parser.add_argument('--batch-size', type=int, default=4)
+    parser.add_argument('--max-length', type=int, default=512)
+    parser.add_argument('--learning-rate', type=float, default=3e-4)
     args = parser.parse_args()
 
     # ─── Tokenizer + Model Setup ──────────────────────────────────────────
@@ -102,7 +104,7 @@ def main():
     lora_cfg = LoraConfig(
         r=8,
         lora_alpha=32,
-        target_modules=['q_proj','k_proj','v_proj','o_proj'],
+        target_modules=['q_proj', 'k_proj', 'v_proj', 'o_proj'],
         lora_dropout=0.05,
         bias='none',
         task_type='CAUSAL_LM',
@@ -133,6 +135,7 @@ def main():
     model.save_pretrained(args.output_dir)
     tokenizer.save_pretrained(args.output_dir)
     print(f"[✅] LoRA adapter saved to {args.output_dir}")
+
 
 if __name__ == '__main__':
     main()

@@ -9,17 +9,18 @@ Copyright (c) 2025
 """
 # tests/test_ingestion.py
 import os
-import shutil
 import json
 import pytest
 from src.ingestion.parser import normalize_ticket
 from src.ingestion.ingest import main as ingest_main
 
+
 @pytest.fixture
 def sample_data(tmp_path):
     raw = tmp_path / "raw"
     out = tmp_path / "processed"
-    raw.mkdir(); out.mkdir()
+    raw.mkdir()
+    out.mkdir()
     # create a small CSV
     csv_file = raw / "tickets.csv"
     csv_file.write_text(
@@ -37,6 +38,7 @@ def sample_data(tmp_path):
         }])
     )
     return str(raw), str(out)
+
 
 def test_ingest_creates_files(sample_data):
     raw, out = sample_data

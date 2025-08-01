@@ -14,7 +14,8 @@ import requests
 from src.api.main import classify, resolve
 
 FRESHDESK_DOMAIN = os.getenv("FRESHDESK_DOMAIN")  # e.g. "yourcompany.freshdesk.com"
-FRESHDESK_API_KEY= os.getenv("FRESHDESK_API_KEY")
+FRESHDESK_API_KEY = os.getenv("FRESHDESK_API_KEY")
+
 
 def process_ticket(ticket_id: int):
     # fetch ticket
@@ -34,6 +35,7 @@ def process_ticket(ticket_id: int):
         "private": True
     }
     requests.post(note_url, json=note, auth=(FRESHDESK_API_KEY, "X"))
+
 
 if __name__ == "__main__":
     # example: process ticket #123

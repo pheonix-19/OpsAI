@@ -24,6 +24,7 @@ MENTION_TRIGGER = f"<@{os.getenv('YOUR_BOT_USER_ID')}>"  # use the env var
 
 app = App(token=SLACK_BOT_TOKEN)
 
+
 @app.event("app_mention")
 def handle_mention(body, say):
     from src.api.main import classify, resolve  # local import to avoid cycles
@@ -34,6 +35,7 @@ def handle_mention(body, say):
 
     res = resolve.__wrapped__(type("Q", (), {"text": text, "top_k": 3}))
     say(f"*Suggestion:* {res.suggestion}")
+
 
 if __name__ == "__main__":
     handler = SocketModeHandler(app, SLACK_APP_TOKEN)

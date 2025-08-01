@@ -15,6 +15,7 @@ import json
 import os
 from typing import List, Dict, Any
 
+
 def load_csv(path: str) -> List[Dict[str, Any]]:
     """
     Load tickets from a CSV file.
@@ -25,12 +26,13 @@ def load_csv(path: str) -> List[Dict[str, Any]]:
         reader = csv.DictReader(f)
         for row in reader:
             tickets.append({
-                'title':      row.get('Subject', '').strip(),
-                'body':       row.get('Description', '').strip(),
-                'labels':     [l.strip() for l in row.get('Tags', '').split(',') if l.strip()],
+                'title': row.get('Subject', '').strip(),
+                'body': row.get('Description', '').strip(),
+                'labels': [label.strip() for label in row.get('Tags', '').split(',') if label.strip()],
                 'resolution': row.get('Resolution', '').strip(),
             })
     return tickets
+
 
 def load_json(path: str) -> List[Dict[str, Any]]:
     """
@@ -49,16 +51,18 @@ def load_json(path: str) -> List[Dict[str, Any]]:
     else:
         return []
 
+
 def normalize_ticket(ticket: Dict[str, Any]) -> Dict[str, Any]:
     """
     Ensure each ticket has clean 'title', 'body', 'labels', and 'resolution' fields.
     """
     return {
-        'title':      ticket.get('title', '').strip(),
-        'body':       ticket.get('body', '').strip(),
-        'labels':     ticket.get('labels', []) if isinstance(ticket.get('labels', []), list) else [],
+        'title': ticket.get('title', '').strip(),
+        'body': ticket.get('body', '').strip(),
+        'labels': ticket.get('labels', []) if isinstance(ticket.get('labels', []), list) else [],
         'resolution': ticket.get('resolution', '').strip(),
     }
+
 
 def save_processed(tickets: List[Dict[str, Any]], output_dir: str) -> None:
     """

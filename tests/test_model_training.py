@@ -9,11 +9,10 @@ Copyright (c) 2025
 """
 # tests/test_model_training.py
 
-import os
 import json
-import tempfile
 from src.model_training.train_lora import TicketDataset
 from transformers import AutoTokenizer
+
 
 def test_ticket_dataset(tmp_path):
     # prepare a processed ticket

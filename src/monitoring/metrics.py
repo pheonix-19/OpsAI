@@ -25,6 +25,7 @@ REQUEST_LATENCY = Histogram(
     ["method", "endpoint"],
 )
 
+
 def setup_metrics(app):
     @app.middleware("http")
     async def metrics_middleware(request: Request, call_next):
@@ -33,8 +34,8 @@ def setup_metrics(app):
         duration = time.time() - start
 
         endpoint = request.url.path
-        method   = request.method
-        status   = response.status_code
+        method = request.method
+        status = response.status_code
 
         REQUEST_LATENCY.labels(method=method, endpoint=endpoint).observe(duration)
         REQUEST_COUNT.labels(method=method, endpoint=endpoint, http_status=status).inc()

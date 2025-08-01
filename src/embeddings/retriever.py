@@ -17,6 +17,7 @@ import json
 from sentence_transformers import SentenceTransformer
 import faiss
 
+
 def load_index(index_path: str, meta_path: str):
     """
     Load FAISS index and metadata (ticket_paths) from disk.
@@ -25,6 +26,7 @@ def load_index(index_path: str, meta_path: str):
     with open(meta_path, 'rb') as f:
         meta = pickle.load(f)
     return index, meta
+
 
 def query_index(query: str, index, meta, model_name: str, top_k: int):
     """
@@ -39,18 +41,19 @@ def query_index(query: str, index, meta, model_name: str, top_k: int):
         ticket_path = meta['ticket_paths'][idx]
         ticket = json.load(open(ticket_path, 'r', encoding='utf-8'))
         results.append({
-            'ticket':   ticket,
+            'ticket': ticket,
             'distance': float(dist)
         })
     return results
 
+
 def main():
     parser = argparse.ArgumentParser(description="Query the ticket FAISS index")
-    parser.add_argument('--query',     required=True, help="Text query")
+    parser.add_argument('--query', required=True, help="Text query")
     parser.add_argument('--index-dir', required=True, help="Directory with ticket_index.faiss & ticket_meta.pkl")
-    parser.add_argument('--input-dir',  required=False, help="(Not used) kept for symmetry")
-    parser.add_argument('--model',      default='all-MiniLM-L6-v2', help="SentenceTransformer model")
-    parser.add_argument('--top-k',      type=int, default=5, help="How many results to return")
+    parser.add_argument('--input-dir', required=False, help="(Not used) kept for symmetry")
+    parser.add_argument('--model', default='all-MiniLM-L6-v2', help="SentenceTransformer model")
+    parser.add_argument('--top-k', type=int, default=5, help="How many results to return")
     args = parser.parse_args()
 
     ix = os.path.join(args.index_dir, 'ticket_index.faiss')
@@ -58,6 +61,7 @@ def main():
     index, meta = load_index(ix, mt)
     results = query_index(args.query, index, meta, args.model, args.top_k)
     print(json.dumps(results, ensure_ascii=False, indent=2))
+
 
 if __name__ == '__main__':
     main()

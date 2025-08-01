@@ -9,16 +9,15 @@ Copyright (c) 2025
 """
 # tests/test_embeddings.py
 
-import os
 import json
-import tempfile
-from src.embeddings.embedder     import build_and_save
-from src.embeddings.retriever    import load_index, query_index
+from src.embeddings.embedder import build_and_save
+from src.embeddings.retriever import load_index, query_index
+
 
 def test_embedding_and_retrieval(tmp_path):
     # 1) Create a fake processed directory
     proc_dir = tmp_path / "processed"
-    idx_dir  = tmp_path / "index"
+    idx_dir = tmp_path / "index"
     proc_dir.mkdir()
     idx_dir.mkdir()
 

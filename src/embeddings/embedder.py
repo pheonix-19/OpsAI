@@ -18,6 +18,7 @@ import numpy as np
 from sentence_transformers import SentenceTransformer
 import faiss
 
+
 def load_tickets(input_dir: str) -> List[Dict]:
     """
     Load all JSON tickets from input_dir and return as a list of dicts.
@@ -30,6 +31,7 @@ def load_tickets(input_dir: str) -> List[Dict]:
                 tickets.append(json.load(f))
     return tickets
 
+
 def embed_tickets(tickets: List[Dict], model_name: str = 'all-MiniLM-L6-v2') -> np.ndarray:
     """
     Embed each ticket by concatenating title + body.
@@ -40,6 +42,7 @@ def embed_tickets(tickets: List[Dict], model_name: str = 'all-MiniLM-L6-v2') -> 
     embeddings = model.encode(texts, show_progress_bar=True, convert_to_numpy=True)
     return embeddings
 
+
 def build_faiss_index(embeddings: np.ndarray):
     """
     Build a simple L2 FAISS index over the embeddings.
@@ -49,6 +52,7 @@ def build_faiss_index(embeddings: np.ndarray):
     index.add(embeddings)
     return index
 
+
 def save_index(index, index_path: str, meta: Dict, meta_path: str):
     """
     Persist the FAISS index and metadata (ticket_paths) to disk.
@@ -56,6 +60,7 @@ def save_index(index, index_path: str, meta: Dict, meta_path: str):
     faiss.write_index(index, index_path)
     with open(meta_path, 'wb') as f:
         pickle.dump(meta, f)
+
 
 def build_and_save(input_dir: str, output_dir: str, model_name: str = 'all-MiniLM-L6-v2'):
     """
@@ -72,7 +77,7 @@ def build_and_save(input_dir: str, output_dir: str, model_name: str = 'all-MiniL
 
     os.makedirs(output_dir, exist_ok=True)
     index_path = os.path.join(output_dir, 'ticket_index.faiss')
-    meta_path  = os.path.join(output_dir, 'ticket_meta.pkl')
+    meta_path = os.path.join(output_dir, 'ticket_meta.pkl')
     save_index(index, index_path, meta, meta_path)
 
     print(f"[✅] Built index with {embeddings.shape[0]} vectors → {output_dir}")

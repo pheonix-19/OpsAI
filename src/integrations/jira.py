@@ -20,10 +20,10 @@ from pydantic import BaseModel
 load_dotenv()  # reads ~/opsai/.env
 
 # ─── Config from environment ────────────────────────────────────────────
-JIRA_URL        = os.getenv("JIRA_URL")
-JIRA_USER       = os.getenv("JIRA_USER")
-JIRA_API_TOKEN  = os.getenv("JIRA_API_TOKEN")
-WEBHOOK_SECRET  = os.getenv("JIRA_WEBHOOK_SECRET", "")
+JIRA_URL = os.getenv("JIRA_URL")
+JIRA_USER = os.getenv("JIRA_USER")
+JIRA_API_TOKEN = os.getenv("JIRA_API_TOKEN")
+WEBHOOK_SECRET = os.getenv("JIRA_WEBHOOK_SECRET", "")
 
 if not (JIRA_URL and JIRA_USER and JIRA_API_TOKEN):
     raise RuntimeError("JIRA_URL, JIRA_USER, and JIRA_API_TOKEN must be set in .env")
@@ -36,9 +36,11 @@ jira_client = JIRA(
 
 router = APIRouter()
 
+
 class IssuePayload(BaseModel):
     issue: dict
     timestamp: str
+
 
 @router.post("/jira/webhook")
 async def handle_jira_webhook(
@@ -53,11 +55,11 @@ async def handle_jira_webhook(
     from src.api.main import classify, resolve
 
     issue = payload.issue
-    key   = issue["key"]
-    fields= issue["fields"]
+    key = issue["key"]
+    fields = issue["fields"]
     summary = fields.get("summary", "")
-    desc    = fields.get("description", "")
-    text    = f"{summary}\n{desc}"
+    desc = fields.get("description", "")
+    text = f"{summary}\n{desc}"
 
     cls = await classify.__wrapped__(type("Q", (), {"text": text, "top_k": 3}))
     res = await resolve.__wrapped__(type("Q", (), {"text": text, "top_k": 3}))

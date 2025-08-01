@@ -37,6 +37,8 @@ from pathlib import Path
 
 DB_PATH = Path("data") / "opsai.db"
 DB_PATH.parent.mkdir(exist_ok=True)
+
+
 def init_db():
     conn = sqlite3.connect(DB_PATH)
     conn.execute("""
@@ -52,18 +54,19 @@ def init_db():
     conn.commit()
     conn.close()
 
+
 # ─── Configuration ─────────────────────────────────────────────────────
-INDEX_DIR     = os.getenv("INDEX_DIR", "data/index")
-ADAPTER_DIR   = os.getenv("ADAPTER_DIR", "models/lora_adapter")
-BASE_MODEL    = os.getenv("BASE_MODEL", "EleutherAI/gpt-neo-125M")
-EMBED_MODEL   = os.getenv("EMBED_MODEL", "all-MiniLM-L6-v2")
+INDEX_DIR = os.getenv("INDEX_DIR", "data/index")
+ADAPTER_DIR = os.getenv("ADAPTER_DIR", "models/lora_adapter")
+BASE_MODEL = os.getenv("BASE_MODEL", "EleutherAI/gpt-neo-125M")
+EMBED_MODEL = os.getenv("EMBED_MODEL", "all-MiniLM-L6-v2")
 TOP_K_DEFAULT = int(os.getenv("TOP_K", "3"))
 
 # ─── Load vector index & metadata ──────────────────────────────────────
 _index_path = os.path.join(INDEX_DIR, "ticket_index.faiss")
-_meta_path  = os.path.join(INDEX_DIR, "ticket_meta.pkl")
+_meta_path = os.path.join(INDEX_DIR, "ticket_meta.pkl")
 _index = faiss.read_index(_index_path)
-_meta  = pickle.load(open(_meta_path, "rb"))
+_meta = pickle.load(open(_meta_path, "rb"))
 
 # ─── Load sentence‐transformer for embeddings ─────────────────────────
 _embedder = SentenceTransformer(EMBED_MODEL)
@@ -94,36 +97,44 @@ app = FastAPI(title="OpsAI Inference API")
 setup_metrics(app)
 app.include_router(jira_router)
 
+
 @app.get("/")
 async def root():
     return {"message": "Welcome to the OpsAI API! See /docs for usage."}
+
 
 class QueryPayload(BaseModel):
     text: str
     top_k: int = TOP_K_DEFAULT
 
+
 class ClassifyResponse(BaseModel):
     tags: List[str]
     teams: List[str]
 
+
 class ResolveResponse(BaseModel):
     suggestion: str
     context_tickets: List[dict]
+
 
 class FeedbackIn(BaseModel):
     ticket: dict
     suggestion: str
     rating: int = Field(ge=1, le=5)
     comment: str | None = None
+
+
 # simple mapping of labels → team names (adjust as needed)
 LABEL_TEAM_MAP = {
-    "network":    "IT Helpdesk",
-    "auth":       "IT Helpdesk",
-    "performance":"Engineering",
-    "mail":       "IT Helpdesk",
-    "tooling":    "Engineering",
-    "user":       "IT Helpdesk",
+    "network": "IT Helpdesk",
+    "auth": "IT Helpdesk",
+    "performance": "Engineering",
+    "mail": "IT Helpdesk",
+    "tooling": "Engineering",
+    "user": "IT Helpdesk",
 }
+
 
 def _retrieve(text: str, top_k: int):
     q_emb = _embedder.encode([text], convert_to_numpy=True)
@@ -132,9 +143,10 @@ def _retrieve(text: str, top_k: int):
     for dist, idx in zip(dists[0], idxs[0]):
         path = _meta["ticket_paths"][idx]
         ticket = pickle.load(open(path.replace(".json", ".pkl"), "rb")) \
-                 if path.endswith(".pkl") else __import__("json").load(open(path))
+            if path.endswith(".pkl") else __import__("json").load(open(path))
         results.append({"ticket": ticket, "distance": float(dist)})
     return results
+
 
 @app.post("/classify", response_model=ClassifyResponse)
 async def classify(q: QueryPayload):
@@ -175,7 +187,7 @@ async def resolve(q: QueryPayload):
     # Move input tensors to the same device as the model
     device = next(_model.parameters()).device
     inputs = {k: v.to(device) for k, v in inputs.items()}
-    
+
     # Use proper generation parameters (remove temperature as it's causing issues)
     gen_cfg = GenerationConfig(
         max_new_tokens=100,
@@ -183,13 +195,14 @@ async def resolve(q: QueryPayload):
         top_p=0.9,
         pad_token_id=_tokenizer.eos_token_id
     )
-    
+
     with torch.no_grad():
         out = _model.generate(**inputs, generation_config=gen_cfg)
-    
+
     suggestion = _tokenizer.decode(out[0], skip_special_tokens=True)[len(prompt):].strip()
 
     return {"suggestion": suggestion, "context_tickets": [h["ticket"] for h in hits]}
+
 
 @app.post("/feedback")
 async def feedback(data: FeedbackIn):
@@ -200,4 +213,4 @@ async def feedback(data: FeedbackIn):
     )
     conn.commit()
     conn.close()
-    return {"status":"ok"}
+    return {"status": "ok"}
