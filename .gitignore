@@ -1,6 +1,378 @@
-env
-src/api/__pycache__/
-src/integrations/__pycache__/
-src/model_training/__pycache__/
+# ============================================================================
+# 🤖 OpsAI Project .gitignore
+# Comprehensive ignore rules for Python AI/ML project with monitoring stack
+# ============================================================================
+
+# ============================================================================
+# 🐍 Python
+# ============================================================================
+# Byte-compiled / optimized / DLL files
 __pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# PyInstaller
+*.manifest
+*.spec
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+.ruff_cache/
+
+# Virtual environments
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+.venv/
+conda-env/
+.conda/
+
+# ============================================================================
+# 🔐 Environment & Configuration
+# ============================================================================
 .env
+.env.local
+.env.*.local
+.env.production
+.env.staging
+.env.development
+*.env
+config.local.json
+secrets.json
+
+# API Keys and Tokens
+*_token
+*_secret
+*_key
+*.pem
+*.key
+*.cert
+
+# ============================================================================
+# 🤖 AI/ML & Data Science
+# ============================================================================
+# Model files
+*.pkl
+*.pickle
+*.joblib
+*.h5
+*.hdf5
+*.pt
+*.pth
+*.onnx
+*.tflite
+*.pb
+*.caffemodel
+*.weights
+
+# Checkpoint files
+checkpoint/
+checkpoints/
+*/checkpoint*/
+*.ckpt
+*.checkpoint
+
+# Dataset files
+*.csv
+*.tsv
+*.json
+*.jsonl
+*.parquet
+*.feather
+*.xlsx
+*.xls
+!data/raw/tickets.csv
+!data/raw/tickets.json
+!**/sample*.csv
+!**/test*.json
+!**/example*.csv
+
+# Vector databases and indexes
+*.faiss
+*.index
+*.ann
+*.npy
+*.npz
+data/index/
+data/processed/
+!data/processed/.gitkeep
+!data/index/.gitkeep
+
+# Jupyter Notebooks
+.ipynb_checkpoints
+*.ipynb
+!**/example*.ipynb
+!**/tutorial*.ipynb
+
+# TensorBoard logs
+logs/
+runs/
+tensorboard/
+mlruns/
+.mlflow/
+
+# Weights & Biases
+wandb/
+
+# Hugging Face cache
+.cache/huggingface/
+transformers_cache/
+
+# ============================================================================
+# 🐳 Docker & Containerization
+# ============================================================================
+# Docker files
+.dockerignore
+docker-compose.override.yml
+docker-compose.local.yml
+.docker/
+
+# Container data
+volumes/
+docker-data/
+
+# ============================================================================
+# 📊 Monitoring & Logging
+# ============================================================================
+# Prometheus data
+prometheus-data/
+prometheus/data/
+prometheus.yml.local
+
+# Grafana data
+grafana-data/
+grafana/data/
+grafana/logs/
+grafana/plugins/
+grafana.db
+
+# Logs
+*.log
+*.log.*
+logs/
+log/
+*.out
+*.err
+
+# Monitoring configs
+alertmanager.yml.local
+prometheus.local.yml
+
+# ============================================================================
+# 🔧 Development Tools
+# ============================================================================
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+*.backup
+*~
+
+# ============================================================================
+# 📦 Dependencies & Package Managers
+# ============================================================================
+# pip
+pip-log.txt
+pip-delete-this-directory.txt
+
+# conda
+.conda/
+*.conda
+
+# Poetry
+poetry.lock
+
+# pipenv
+Pipfile.lock
+
+# ============================================================================
+# 🧪 Testing & CI/CD
+# ============================================================================
+# Test outputs
+.pytest_cache/
+test-results/
+test-reports/
+.coverage
+htmlcov/
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# ============================================================================
+# 🌐 Web & API
+# ============================================================================
+# FastAPI
+.fastapi-cache/
+
+# Static files
+static/
+media/
+uploads/
+
+# ============================================================================
+# 📈 Analytics & Metrics
+# ============================================================================
+# Performance data
+*.prof
+*.profile
+profiling/
+
+# Metrics storage
+metrics/
+stats/
+
+# ============================================================================
+# 🔄 Temporary & Cache Files
+# ============================================================================
+# General cache
+.cache/
+cache/
+.tmp/
+tmp/
+
+# Python cache
+*.pyc
+*.pyo
+*.pyd
+
+# Compiled translations
+*.mo
+
+# ============================================================================
+# 📋 Documentation
+# ============================================================================
+# Generated docs
+docs/_build/
+docs/build/
+site/
+_site/
+
+# Sphinx
+docs/_build
+docs/source/_autosummary
+
+# ============================================================================
+# 🎯 Project Specific
+# ============================================================================
+# OpsAI specific data directories
+data/raw/*.csv
+data/raw/*.json
+!data/raw/tickets.csv
+!data/raw/tickets.json
+
+# Model artifacts
+models/downloads/
+models/cache/
+models/temp/
+
+# Training outputs
+training_logs/
+experiments/
+runs/
+
+# Backup files
+*.backup
+backup/
+backups/
+
+# Local configuration overrides
+local_config.py
+config_local.py
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+!data/opsai.db
+
+# ============================================================================
+# 🚀 Production & Deployment
+# ============================================================================
+# Deployment artifacts
+deploy/
+deployment/
+k8s-local/
+
+# SSL certificates
+*.crt
+*.pem
+*.key
+ssl/
+
+# Terraform
+*.tfstate
+*.tfstate.*
+.terraform/
+
+# ============================================================================
+# 💾 Keep Essential Directories
+# ============================================================================
+# Keep directory structure but ignore contents
+!data/
+!data/raw/
+!data/processed/
+!data/index/
+!models/
+!models/lora_adapter/
+!logs/
+!tests/
+
+# Keep gitkeep files
+!.gitkeep
