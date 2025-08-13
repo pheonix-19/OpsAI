@@ -46,13 +46,7 @@ class Config:
         """Validate that required secrets are present."""
         missing = []
         
-        # Check for required API keys based on enabled features
-        if not cls.OPENAI_API_KEY:
-            missing.append("OPENAI_API_KEY")
-            
-        if not cls.HUGGINGFACE_API_TOKEN:
-            missing.append("HUGGINGFACE_API_TOKEN")
-            
+        # OpenAI, Hugging Face, and Database are optional - no validation needed
         # Only require integration secrets if the integration is configured
         if cls.JIRA_URL and not cls.JIRA_API_TOKEN:
             missing.append("JIRA_API_TOKEN")

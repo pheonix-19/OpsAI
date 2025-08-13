@@ -9,9 +9,14 @@ global:
   scrape_interval: 15s
 
 scrape_configs:
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+    metrics_path: /metrics
+
   - job_name: 'opsai_api'
     static_configs:
-      - targets: ['api:8000']    # matches your docker-compose service name & port
+      - targets: ['api:8000']
     metrics_path: /metrics
 
 rule_files:

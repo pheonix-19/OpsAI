@@ -13,13 +13,22 @@ WORKDIR /app
 # install system deps
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
+    git \
+    curl \
  && rm -rf /var/lib/apt/lists/*
+
+# upgrade pip and install with better timeout settings
+RUN pip install --upgrade pip
 
 # copy only requirements first (for caching)
 COPY requirements.txt .
 
-# install pip deps
-RUN pip install --no-cache-dir -r requirements.txt
+# install pip deps with increased timeout and retries
+RUN pip install --no-cache-dir \
+    --timeout 1000 \
+    --retries 5 \
+    --default-timeout=1000 \
+    -r requirements.txt
 
 # copy source
 COPY src/ src/
