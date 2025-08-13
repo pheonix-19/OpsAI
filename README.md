@@ -18,8 +18,23 @@
 
 OpsAI is an advanced AI system that revolutionizes IT support operations by automatically categorizing tickets, suggesting solutions, and routing requests to the right teams. Using cutting-edge vector embeddings and fine-tuned language models, it learns from historical data to provide instant, contextual support recommendations.
 
-## 📋 **Table of Contents**
+## � **Live Screenshots**
 
+**🖥️ Grafana Dashboard in Action:**
+![Grafana OpsAI Dashboard](asset/grafana.png)
+*Real-time monitoring dashboard showing API metrics, request rates, and system health*
+
+**📊 Prometheus Metrics Collection:**
+![Prometheus Metrics](asset/promethius1.png)
+*Prometheus collecting and displaying OpsAI application metrics*
+
+**⚙️ Prometheus Configuration & Targets:**
+![Prometheus Targets](asset/promethius2.png)
+*Prometheus monitoring targets and service discovery configuration*
+
+## �📋 **Table of Contents**
+
+- [📸 Live Screenshots](#-live-screenshots)
 - [🏗️ System Architecture](#️-system-architecture--components)
 - [🎯 What Problem Does OpsAI Solve?](#-what-problem-does-opsai-solve)
 - [✨ Core Features](#-core-features)
