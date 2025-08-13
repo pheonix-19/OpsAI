@@ -376,3 +376,7 @@ ssl/
 
 # Keep gitkeep files
 !.gitkeep
+
+# Ignore all markdown files except README.md
+*.md
+!README.md
