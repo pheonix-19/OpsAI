@@ -336,7 +336,21 @@ opsai_request_latency_seconds_sum{endpoint="/resolve"} 2.28
 - 📈 **Endpoint Breakdown**: Usage analytics by endpoint
 - 🥧 **Visual Analytics**: Interactive charts and tables
 
-### **🔍 Prometheus Query Examples**
+### **� Live Screenshots**
+
+**🖥️ Grafana Dashboard in Action:**
+![Grafana OpsAI Dashboard](asset/grafana.png)
+*Real-time monitoring dashboard showing API metrics, request rates, and system health*
+
+**📊 Prometheus Metrics Collection:**
+![Prometheus Metrics](asset/promethius1.png)
+*Prometheus collecting and displaying OpsAI application metrics*
+
+**⚙️ Prometheus Configuration & Targets:**
+![Prometheus Targets](asset/promethius2.png)
+*Prometheus monitoring targets and service discovery configuration*
+
+### **�🔍 Prometheus Query Examples**
 Essential queries for monitoring (see `PROMETHEUS_QUERIES.md` for complete reference):
 
 ```promql
