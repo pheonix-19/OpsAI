@@ -20,8 +20,6 @@ import faiss
 import torch
 from fastapi import FastAPI
 
-# Import our secure configuration
-from src.config import config
 from pydantic import BaseModel, Field
 from sentence_transformers import SentenceTransformer
 from transformers import (
